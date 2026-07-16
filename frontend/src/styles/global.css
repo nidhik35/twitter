@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: #000000;
+  color: #e7e9ea;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
