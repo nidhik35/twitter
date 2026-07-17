@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import socket from "../services/socket";
 import Sidebar from "../components/Sidebar";
-import composer from "../components/composer";
+import Composer from "../components/Composer";
 import Tweet from "../components/Tweet";
 import RightSidebar from "../components/RightSidebar";
 
