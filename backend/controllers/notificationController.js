@@ -6,6 +6,8 @@ const getNotifications = async (req, res) => {
       recipient: req.user.id,
     })
       .populate("sender", "username")
+.populate("senders", "username")
+
       .sort({ createdAt: -1 });
 
     res.status(200).json(notifications);

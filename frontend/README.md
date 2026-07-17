@@ -179,3 +179,21 @@ Nidhi K
 Information Science & Engineering
 
 CGPA: 8.99
+### Performance Benchmark (Autocannon)
+
+Test Configuration:
+- Concurrent Connections: 50
+- Duration: 20 seconds
+
+With Redis Cache
+- Average Latency: 94.81 ms
+- Throughput: 525 requests/sec
+- Requests Served: ~11,000
+
+Without Redis Cache
+- Average Latency: 1378.44 ms
+- Throughput: 35 requests/sec
+- Requests Served: ~743
+
+Result:
+Redis caching improved throughput by approximately 15× while significantly reducing average response latency.

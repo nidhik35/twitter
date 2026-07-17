@@ -13,6 +13,17 @@ const notificationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    senders: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+],
+
+count: {
+  type: Number,
+  default: 1,
+},
 
     type: {
       type: String,

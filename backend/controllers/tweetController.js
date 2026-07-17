@@ -144,28 +144,46 @@ const likeTweet = async (req, res, next) => {
 
     await tweet.save();
     await redisClient.flushAll();
+if (tweet.author.toString() !== userId) {
 
-    if (tweet.author.toString() !== userId) {
-      const existingNotification =
-        await Notification.findOne({
-          recipient: tweet.author,
-          sender: userId,
-          type: "like",
-          tweet: tweet._id,
-        });
+  // Find an existing unread like notification for this tweet
+  const existingNotification = await Notification.findOne({
+    recipient: tweet.author,
+    type: "like",
+    tweet: tweet._id,
+    read: false,
+  });
 
-      if (!existingNotification) {
-        await Notification.create({
-          recipient: tweet.author,
-          sender: userId,
-          type: "like",
-          tweet: tweet._id,
-        });
-      }
-      const io = req.app.get("io");
-io.emit("newNotification");
+  if (existingNotification) {
+
+    // Add sender only if not already present
+    if (
+      !existingNotification.senders.some(
+        (id) => id.toString() === userId
+      )
+    ) {
+      existingNotification.senders.push(userId);
+      existingNotification.count += 1;
+
+      await existingNotification.save();
     }
 
+  } else {
+
+    await Notification.create({
+      recipient: tweet.author,
+      sender: userId,
+      senders: [userId],
+      count: 1,
+      type: "like",
+      tweet: tweet._id,
+    });
+
+  }
+
+  const io = req.app.get("io");
+  io.emit("newNotification");
+}
     return res.json({
       message: "Tweet liked",
     });
@@ -191,11 +209,11 @@ const cacheKey = `feed:${req.user.id}:${cursor || "first"}:${limit}`;
 // Check Redis first
 const cachedFeed = await redisClient.get(cacheKey);
 
-    if (cachedFeed) {
+  if (cachedFeed) {
       console.log("Feed served from Redis");
 
-      return res.status(200).json(
-        JSON.parse(cachedFeed)
+     return res.status(200).json(
+       JSON.parse(cachedFeed)
       );
     }
 
@@ -231,17 +249,21 @@ const cachedFeed = await redisClient.get(cacheKey);
         ? tweets[tweets.length - 1]._id
         : null;
 
-    const response = {
-      tweets,
-      nextCursor,
-    };
+   const response = {
+  tweets,
+  nextCursor,
+};
 
-    // Store in Redis for 60 seconds
-    await redisClient.setEx(
-      cacheKey,
-      60,
-      JSON.stringify(response)
-    );
+// Store in Redis for 60 seconds
+await redisClient.set(
+  cacheKey,
+  JSON.stringify(response),
+  {
+    EX: 60,
+  }
+);
+
+res.status(200).json(response);
 
     console.log("Feed served from MongoDB");
 

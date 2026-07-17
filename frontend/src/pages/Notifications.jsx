@@ -74,15 +74,29 @@ export default function Notifications() {
               </div>
 
               <div>
-                <strong>{n.sender?.username}</strong>
+                <strong>
+  {n.senders?.length > 0
+    ? n.senders[0].username
+    : n.sender?.username}
+</strong>
 
                 {n.type === "follow" && (
                   <span> followed you 👤</span>
                 )}
 
-                {n.type === "like" && (
-                  <span> liked your tweet ❤️</span>
-                )}
+              {n.type === "like" && (
+  <span>
+    {n.count > 1 ? (
+      <>
+        {" "}
+        and {n.count - 1} other
+        {n.count > 2 ? "s" : ""} liked your tweet ❤️
+      </>
+    ) : (
+      <> liked your tweet ❤️</>
+    )}
+  </span>
+)}
 
                 {n.type === "reply" && (
                   <span> replied to your tweet 💬</span>
