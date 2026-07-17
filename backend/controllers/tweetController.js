@@ -207,16 +207,15 @@ const cacheKey = `feed:${req.user.id}:${cursor || "first"}:${limit}`;
 //await redisClient.flushAll();
 
 // Check Redis first
-const cachedFeed = await redisClient.get(cacheKey);
+// const cachedFeed = await redisClient.get(cacheKey);
 
-  if (cachedFeed) {
-      console.log("Feed served from Redis");
+// if (cachedFeed) {
+//   console.log("Feed served from Redis");
 
-     return res.status(200).json(
-       JSON.parse(cachedFeed)
-      );
-    }
-
+//   return res.status(200).json(
+//     JSON.parse(cachedFeed)
+//   );
+// }
     // Get current user
     const currentUser = await User.findById(req.user.id);
 
@@ -242,6 +241,17 @@ const cachedFeed = await redisClient.get(cacheKey);
       )
       .sort({ _id: -1 })
       .limit(limit);
+      console.log("Following:", currentUser.following);
+console.log("Tweets returned:", tweets.length);
+
+tweets.forEach(tweet => {
+  console.log(
+    "Tweet author:",
+    tweet.author._id.toString(),
+    "Username:",
+    tweet.author.username
+  );
+});
 
     // Next cursor
     const nextCursor =
@@ -255,19 +265,17 @@ const cachedFeed = await redisClient.get(cacheKey);
 };
 
 // Store in Redis for 60 seconds
-await redisClient.set(
-  cacheKey,
-  JSON.stringify(response),
-  {
-    EX: 60,
-  }
-);
+// await redisClient.set(
+//   cacheKey,
+//   JSON.stringify(response),
+//   {
+//     EX: 60,
+//   }
+// );
 
-res.status(200).json(response);
+console.log("Feed served from MongoDB");
 
-    console.log("Feed served from MongoDB");
-
-    res.status(200).json(response);
+return res.status(200).json(response);
 
   } catch (error) {
     next(error);
