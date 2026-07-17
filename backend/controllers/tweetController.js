@@ -1,7 +1,7 @@
 const Tweet = require("../models/Tweet");
 const User = require("../models/User");
 const redisClient = require("../config/redis");
-const Reply = require("../models/Reply");
+const Reply = require("../models/reply");
 const Notification = require("../models/Notification");
 
 // Create Tweet
