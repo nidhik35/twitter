@@ -9,8 +9,8 @@ export default function Search() {
 
   const handleSearch = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/search/users?q=${query}`
+     const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/search/users?q=${query}`,
       );
 
       const data = await res.json();

@@ -11,7 +11,7 @@ const [suggestions, setSuggestions] = useState([]);
 }, []);
 const fetchTrending = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/trending");
+const res = await fetch(`${import.meta.env.VITE_API_URL}/api/trending`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch trending hashtags");
@@ -27,8 +27,8 @@ const fetchTrending = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(
-      "http://localhost:5000/api/users/suggestions",
+   const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/users/suggestions`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const handleFollow = async (userId) => {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/users/follow/${userId}`,
+     `${import.meta.env.VITE_API_URL}/api/users/follow/${userId}`,
       {
         method: "POST",
         headers: {

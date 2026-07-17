@@ -32,8 +32,8 @@ export default function Sidebar() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch(
-        "http://localhost:5000/api/notifications/count",
+     const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/notifications/count`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

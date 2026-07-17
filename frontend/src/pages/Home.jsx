@@ -26,7 +26,7 @@ export default function Home() {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        "http://localhost:5000/api/tweets/feed?limit=10",
+  `${import.meta.env.VITE_API_URL}/api/tweets/feed?limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,8 +80,8 @@ setTweets(formattedTweets);
   console.log("TOKEN:", token);
 
   try {
-    const res = await fetch(
-      "http://localhost:5000/api/tweets",
+  const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/tweets`,
       {
         method: "POST",
         headers: {
@@ -114,8 +114,8 @@ setTweets(formattedTweets);
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(
-      `http://localhost:5000/api/tweets/${id}/like`,
+   const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/tweets/${id}/like`,
       {
         method: "POST",
         headers: {
@@ -140,7 +140,7 @@ const handleReply = async (tweetId, content) => {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/tweets/${tweetId}/reply`,
+  `${import.meta.env.VITE_API_URL}/api/tweets/${tweetId}/reply`,
       {
         method: "POST",
         headers: {
@@ -170,8 +170,8 @@ const handleReply = async (tweetId, content) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(
-      `http://localhost:5000/api/tweets/${id}/retweet`,
+  const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/tweets/${id}/retweet`,
       {
         method: "POST",
         headers: {

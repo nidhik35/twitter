@@ -22,7 +22,7 @@ useEffect(() => {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${id}`);
+     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
       const data = await res.json();
       setProfile(data);
       setBio(data.bio || "");
@@ -36,7 +36,7 @@ setProfileImageUrl(data.profileImageUrl || "");
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/users/${id}/follow-status`,
+   `${import.meta.env.VITE_API_URL}/api/users/${id}/follow-status`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,7 +54,7 @@ setProfileImageUrl(data.profileImageUrl || "");
 const fetchTweets = async () => {
   try {
     const res = await fetch(
-      `http://localhost:5000/api/users/${id}/tweets`
+    `${import.meta.env.VITE_API_URL}/api/users/${id}/tweets`
     );
 
     const data = await res.json();
@@ -73,7 +73,7 @@ const handleFollow = async () => {
       : "follow";
 
     const res = await fetch(
-      `http://localhost:5000/api/users/${endpoint}/${id}`,
+  `${import.meta.env.VITE_API_URL}/api/users/${endpoint}/${id}`,
       {
         method: "POST",
         headers: {
@@ -98,8 +98,8 @@ const handleSaveProfile = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(
-      "http://localhost:5000/api/users/profile",
+   const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/users/profile`,
       {
         method: "PUT",
         headers: {
@@ -135,8 +135,8 @@ const handleDeleteTweet = async (tweetId) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(
-      `http://localhost:5000/api/tweets/${tweetId}`,
+  const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/tweets/${tweetId}`,
       {
         method: "DELETE",
         headers: {
